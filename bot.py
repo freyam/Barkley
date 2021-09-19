@@ -9,39 +9,42 @@ client = discord.Client()
 
 
 def enable_tag(receiver, sender):
-    
+    sender_key = str(sender)
     with open("users.json", "r") as f:
         users = json.load(f)
-        print("entered enable")
+        # print("entered enable")
         
-        if(users.get(sender) is None):
-            users[sender] = []
+        if(users.get(sender_key) is None):
+            users[sender_key] = []
             # print(users)
-        if(receiver not in users.get(sender)):
-            users.get(sender).append(receiver)
+        if(receiver not in users.get(sender_key)):
+            users.get(sender_key).append(receiver)
     with open("users.json", "w") as f:
         json.dump(users, f)
-    print("done enabling...")
+    # print("done enabling...")
 
 
 def disable_tag(receiver, sender):
+    sender_key = str(sender)
     with open("users.json", "r") as f:
         users = json.load(f)
-        if (receiver in users.get(sender)):
-                users.get(sender).remove(receiver)
+        print(users)
+        if (receiver in users.get(sender_key)):
+                users.get(sender_key).remove(receiver)
 
     with open("users.json", "w") as f:
         json.dump(users, f)
 
 
 def generate_tag(sender):
+    sender_key = str(sender)
     with open("users.json", "r") as f:
         users = json.load(f)
         message = ""
-        print(users)
-        for receiver in users.get(sender):
-            print("receiver = " + receiver)
-            message += "<@!{receiver}> " 
+        print(users.get(sender_key))
+        for receiver in users.get(sender_key):
+            print("receiver = " + str(receiver))
+            message += f"<@!{receiver}> " 
 
     return message
 
@@ -77,16 +80,22 @@ async def on_message(message):
         # print(sender)
         if (sender):
             enable_tag(receiver, sender)
-            massage = generate_tag(message.author.id)
-            await message.channel.send(massage)
+            # massage = generate_tag(message.author.id)
+            # await message.channel.send(massage)
             await message.add_reaction("✅")
     elif message.content.startswith('.disable pings'):
         receiver = message.author.id
         sender = get_sender(message.content.split()[2])
         if (sender):
-            await message.channel.send(f"{receiver} removed from {sender}'s tag list.")
+            await(await message.channel.send(f"<@!{receiver}> removed from <@!{sender}>'s tag list.")).delete(delay=3)
             await message.add_reaction("✅")
             disable_tag(receiver, sender)
+    else:
+        sender = message.author.id
+        if (sender):
+            massage = generate_tag(message.author.id)
+            await message.channel.send(massage)
+
 
 load_dotenv()
 client.run(os.getenv("DISCORD_TOKEN"))
