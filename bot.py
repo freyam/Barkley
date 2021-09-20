@@ -88,6 +88,7 @@ async def on_message(message):
         sender = get_sender(message.content.split()[2])
         if (sender):
             await(await message.channel.send(f"<@!{receiver}> removed from <@!{sender}>'s tag list.")).delete(delay=3)
+            await message.delete()
             await message.add_reaction("✅")
             disable_tag(receiver, sender)
     else:
