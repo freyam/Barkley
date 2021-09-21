@@ -1,1 +1,6 @@
+# ENVIRONMENT VARIABLES
 .env
+
+# LOCAL FILES
+.vscode
+__pycache__
