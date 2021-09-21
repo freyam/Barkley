@@ -1,6 +1,6 @@
 import json
 
-def is_valid_channel(user_channel) -> bool:
+def is_valid_keyword(user_channel) -> bool:
     with open("channels.json", "r") as f:
         channels = json.load(f)
 
