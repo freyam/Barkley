@@ -1,6 +1,12 @@
-# Barkley - A Discord Doggo
+# Barkley - A Discord Butler
 
-## Usage
+<!-- center image -->
+
+<p align="center">
+  <img src="./barkley.png">
+</p>
+
+<!-- ## Usage
 
 `.` to ping all your listeners
 `.listen @<username>` to get pings when <username> sends a `.`
@@ -13,4 +19,4 @@ We decided to migrate our chats into a server for better organisation.
 Servers don't give you badge notifications for messages, sensibly so.
 
 If you wanted to ping all your listeners (i.e. that care about what you have to say), just send a `.`, and
-they get a ping! best part, it's a ghost tag.
+they get a ping! best part, it's a ghost tag. -->

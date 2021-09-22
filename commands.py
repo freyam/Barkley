@@ -2,6 +2,7 @@ from tag import *
 from organize import *
 from impersonate import *
 
+
 async def dot_listen(message):
     receiver = message.author.id
     sender = get_sender(message.content.split()[1])
@@ -43,30 +44,31 @@ async def dot_add(message):
 
 async def dot_organize(client, message):
     keyword = message.content.split()[0]
-    channel = client.get_channel(int(get_channel_id(keyword)))
-
-    modified_message = ""
+    message_channel = client.get_channel(int(get_channel_id(keyword)))
 
     if message.reference:
-        reply_message_id = int(message.reference.message_id)
-        reply_message = await message.channel.fetch_message(reply_message_id)
-        modified_message = f"**{reply_message.author.name}**\n{reply_message.content}"
-        bot_message = await channel.send(modified_message)
-        await impersonate(bot_message, reply_message.author)
+        reply_message = await message.channel.fetch_message(
+            message.reference.message_id
+        )
 
-        if reply_message.attachments:
-            for attachment in reply_message.attachments:
-                file = await attachment.to_file()
-                bot_message = await channel.send(file=file)
-                await impersonate(bot_message, reply_message.author)
+        message_author = reply_message.author
+        message_content = reply_message.content
+        message_attachment = (
+            [await attch.to_file() for attch in reply_message.attachments]
+            if reply_message.attachments
+            else []
+        )
     else:
-        modified_message = f"**{message.author.name}**\n{message.content[len(message.content.split()[0]) + 1:]}"
-        bot_message = await channel.send(modified_message)
-        await impersonate(bot_message, message.author)
-        if message.attachments:
-            for attachment in message.attachments:
-                file = await attachment.to_file()
-                bot_message = await channel.send(file=file)
-                await impersonate(bot_message, message.author)
+        message_author = message.author
+        message_content = f"{message.content[len(message.content.split()[0]) + 1:]}"
+        message_attachment = (
+            [await attch.to_file() for attch in message.attachments]
+            if message.attachments
+            else []
+        )
+
+    await impersonate(
+        message_author, message_channel, message_content, message_attachment
+    )
 
     await message.delete()
