@@ -1,10 +1,8 @@
 from dotenv import load_dotenv
 import os
 import discord
-import requests
 
-from tag import *
-from organize import *
+from commands import *
 
 client = discord.Client()
 
@@ -25,66 +23,16 @@ async def on_message(message):
     if message.author == client.user:
         return
 
-    elif message.content.startswith(".listen"):
-        receiver = message.author.id
-        sender = get_sender(message.content.split()[1])
-
-        if sender is None:
-            return
-
-        enable_ping(receiver, sender)
-        await message.add_reaction("✅")
-
+    if message.content.startswith(".listen"):
+        await dot_listen(message)
     elif message.content.startswith(".ghost"):
-        receiver = message.author.id
-        sender = get_sender(message.content.split()[1])
-
-        if not sender:
-            return
-
-        disable_ping(receiver, sender)
-        await message.add_reaction("✅")
-
+        await dot_ghost(message)
     elif message.content == ".":
-        sender_id = message.author.id
-        message_with_tags = generate_tag(sender_id)
-        if message_with_tags:
-            await message.delete()
-            await message.channel.send(message_with_tags)
-
-    elif is_valid_keyword(message.content.split()[0]):
-        keyword = message.content.split()[0]
-        channel = client.get_channel(int(get_channel_id(keyword)))
-
-        modified_message = ""
-
-        if message.reference:
-            reply_message_id = int(message.reference.message_id)
-            reply_message = await message.channel.fetch_message(reply_message_id)
-            modified_message = (
-                f"**{reply_message.author.name}**\n{reply_message.content}"
-            )
-            await channel.send(modified_message)
-            if reply_message.attachments:
-                for attachment in reply_message.attachments:
-                    file = await attachment.to_file()
-                    await channel.send(file=file)
-        else:
-            modified_message = f"**{message.author.name}**\n{message.content[len(message.content.split()[0]) + 1:]}"
-            await channel.send(modified_message)
-            if message.attachments:
-                for attachment in message.attachments:
-                    file = await attachment.to_file()
-                    await channel.send(file=file)
-
-        await message.delete()
-
+        await dot_dot(message)
     elif message.content.startswith(".add"):
-        keyword = message.content.split()[1]
-
-        if keyword:
-            add_keyword(keyword, int(message.channel.id))
-            await message.add_reaction("✅")
+        await dot_add(message)
+    elif is_valid_keyword(message.content.split()[0]):
+        await dot_organize(client, message)
 
 
 load_dotenv()
