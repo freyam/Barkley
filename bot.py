@@ -29,6 +29,8 @@ async def on_message(message):
         await dot_ghost(message)
     elif message.content == ".":
         await dot_dot(message)
+    elif message.content == ".j":
+        await dot_jay(client, message, message.guild.id)
     elif message.content.startswith(".add"):
         await dot_add(message)
     elif is_valid_keyword(message.content.split()[0]):
