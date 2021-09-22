@@ -22,22 +22,7 @@ async def on_ready():
 async def on_message(message):
     log(f"{message.channel}: {message.author}: {message.content}")
 
-    if message.attachments:
-        attachment_message = ""
-
-        for attachment in message.attachments:
-            attachment_message += (
-                f"**{message.author.name} sent `{attachment.filename}`**\n"
-                f"`{float(attachment.size)/1000} KB`\n"
-                f"{message.attachments[0].url}\n"
-            )
-
-        if message.content != "":
-            attachment_message += message.content
-
-        await message.channel.send(attachment_message)
-
-    elif message.author == client.user:
+    if message.author == client.user:
         return
 
     elif message.content.startswith(".listen"):
@@ -67,7 +52,10 @@ async def on_message(message):
             await message.delete()
             await message.channel.send(message_with_tags)
 
-    elif is_valid_keyword(message.content.split()[0]) == 1:
+    elif is_valid_keyword(message.content.split()[0]):
+        keyword = message.content.split()[0]
+        channel = client.get_channel(int(get_channel_id(keyword)))
+
         modified_message = ""
 
         if message.reference:
@@ -76,17 +64,20 @@ async def on_message(message):
             modified_message = (
                 f"**{reply_message.author.name}**\n{reply_message.content}"
             )
+            await channel.send(modified_message)
+            if reply_message.attachments:
+                for attachment in reply_message.attachments:
+                    file = await attachment.to_file()
+                    await channel.send(file=file)
         else:
             modified_message = f"**{message.author.name}**\n{message.content[len(message.content.split()[0]) + 1:]}"
-
-        keyword = message.content.split()[0]
-
-        channel_id = int(get_channel_id(keyword))
-        channel = client.get_channel(channel_id)
-
-        if modified_message != "":
-            await message.delete()
             await channel.send(modified_message)
+            if message.attachments:
+                for attachment in message.attachments:
+                    file = await attachment.to_file()
+                    await channel.send(file=file)
+
+        await message.delete()
 
     elif message.content.startswith(".add"):
         keyword = message.content.split()[1]
