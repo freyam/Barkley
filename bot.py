@@ -91,7 +91,7 @@ async def on_message(message):
     elif message.content.startswith(".add"):
         keyword = message.content.split()[1]
 
-        if not keyword:
+        if keyword:
             add_keyword(keyword, int(message.channel.id))
             await message.add_reaction("✅")
 
