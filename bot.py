@@ -20,9 +20,10 @@ async def on_ready():
 async def on_message(message):
     log(f"{message.channel}: {message.author}: {message.content}")
 
-    if message.author == client.user:
+    if message.author.id == client.user.id or message.webhook_id:
         return
-
+    
+    # await impersonate(message)
     if message.content.startswith(".listen"):
         await dot_listen(message)
     elif message.content.startswith(".ghost"):
