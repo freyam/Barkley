@@ -97,6 +97,8 @@ async def dot_jay(client, message, server_id):
         
     await message.delete()
 
-async def dot_big_space(message):
+async def dot_lorem_ipsum(message):
     msg = get_lorem()
+    await impersonate(message.author, message.channel, msg, None)
+    await impersonate(message.author, message.channel, msg, None)
     await impersonate(message.author, message.channel, msg, None)
