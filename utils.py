@@ -1,8 +1,3 @@
-def tag_to_id(seq):
-    seq_type = type(seq)
-    return seq_type().join(filter(seq_type.isdigit, seq))
-
-
 def get_lorem():
     lorem = (
         "Lorem ipsum dolor sit amet, consectetuer adipiscing elit."

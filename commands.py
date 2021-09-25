@@ -80,13 +80,20 @@ async def dot_organize(client, message):
 
 
 async def dot_jay(client, message, server_id):
+    msg_split = message.content.split()
+
+    user = message.author
+
+    if len(msg_split) == 2:
+        user = message.mentions[0]
+
     guild = client.get_guild(server_id)
     Jay = get(guild.roles, name="Jay")
 
-    if Jay in message.author.roles:
-        await message.author.remove_roles(Jay)
+    if Jay in user.roles:
+        await user.remove_roles(Jay)
     else:
-        await message.author.add_roles(Jay)
+        await user.add_roles(Jay)
 
     await message.delete()
 
