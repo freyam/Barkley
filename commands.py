@@ -1,8 +1,11 @@
 from discord.utils import get
+from discord import Embed
 from tag import *
 from organize import *
 from impersonate import *
 from utils import *
+
+import asyncio
 
 
 async def dot_listen(message):
@@ -103,3 +106,38 @@ async def dot_lorem_ipsum(message):
     await impersonate(message.author, message.channel, message_content, None)
     await impersonate(message.author, message.channel, message_content, None)
     await impersonate(message.author, message.channel, message_content, None)
+
+
+def create_question_embed(message, question, options):
+    embed = discord.Embed(title="Quiz", description="", color=0x00FF00)
+    embed.set_author(name=message.author.name, icon_url=message.author.avatar_url)
+
+    embed.add_field(name="❓", value=question, inline=False)
+    embed.add_field(name="🇦", value=options[0].option, inline=False)
+    embed.add_field(name="🇧", value=options[1].option, inline=False)
+    embed.add_field(name="🇨", value=options[2].option, inline=False)
+    embed.add_field(name="🇩", value=options[3].option, inline=False)
+
+    embed.set_footer(text="Answer by reacting with your choice.")
+
+    return embed
+
+
+async def multiple_choice_question(client, quiz_embed, message_quizee):
+    quiz_embed = await message_quizee.channel.send(embed=quiz_embed)
+    await quiz_embed.add_reaction("🇦")
+    await quiz_embed.add_reaction("🇧")
+    await quiz_embed.add_reaction("🇨")
+    await quiz_embed.add_reaction("🇩")
+
+    reaction, user = await client.wait_for(
+        "reaction_add",
+        check=lambda user: user == message_quizee.author,
+    )
+
+    correct_choice = ""
+
+    if reaction.emoji.name == f"regional_indicator_{correct_choice}":
+        await message_quizee.channel.send("Correct!")
+    else:
+        await message_quizee.channel.send("Incorrect!")

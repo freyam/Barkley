@@ -1,3 +1,7 @@
+import hashlib
+import time
+
+
 def get_lorem():
     lorem = (
         "Lorem ipsum dolor sit amet, consectetuer adipiscing elit."
@@ -20,3 +24,22 @@ def get_lorem():
         " Nullam dictum felis eu pede mollis pretium."
     )
     return lorem
+
+
+def get_unique_hash():
+    hash = hashlib.md5()
+    hash.update(str(time.time()).encode("utf-8"))
+    return hash.hexdigest()
+
+
+def create_discord_embed_based_on_question(question, options):
+    embed = {
+        "title": question,
+        "description": get_lorem(),
+        "color": 0x00FF00,
+        "fields": [],
+        "footer": {"text": "Powered by Python"},
+    }
+    for option in options:
+        embed["fields"].append({"name": option, "value": "", "inline": False})
+    return embed

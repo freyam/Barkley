@@ -39,6 +39,8 @@ async def on_message(message):
         await dot_lorem_ipsum(message)
     elif is_valid_keyword(message.content.split()[0]):
         await dot_organize(client, message)
+    elif message.content.startswith(".q"):
+        await dot_quiz(message)
 
 
 load_dotenv()
