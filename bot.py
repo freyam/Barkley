@@ -23,7 +23,9 @@ async def on_message(message):
     if message.author.id == client.user.id or message.webhook_id:
         return
 
-    if message.content.startswith(".listen"):
+    if message.content == "which barkley":
+        await message.channel.send(f"{os.uname()[1]}")
+    elif message.content.startswith(".listen"):
         await dot_listen(message)
     elif message.content.startswith(".ghost"):
         await dot_ghost(message)

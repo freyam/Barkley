@@ -4,6 +4,7 @@ from organize import *
 from impersonate import *
 from utils import *
 
+
 async def dot_listen(message):
     receiver = message.author.id
     sender = get_sender(message.content.split()[1])
@@ -59,6 +60,9 @@ async def dot_organize(client, message):
             if reply_message.attachments
             else []
         )
+
+        if len(message.content.split()) > 1 and message.content.split()[1] == "-":
+            await reply_message.delete()
     else:
         message_author = message.author
         message_content = f"{message.content[len(message.content.split()[0]) + 1:]}"
@@ -74,31 +78,21 @@ async def dot_organize(client, message):
 
     await message.delete()
 
+
 async def dot_jay(client, message, server_id):
-    msg = message.content.split()
-    print(msg)
     guild = client.get_guild(server_id)
-    
-    # if(len(msg) == 2):
-    #     tag = msg[1]
-    #     user_id = tag_to_id(tag)
-    #     print(user_id)
-    #     user = await guild.get_member(int(user_id))
-    #     print(user.name)
-    # else:
-    user = message.author
+    Jay = get(guild.roles, name="Jay")
 
-    Jay = get(guild.roles, name='Jay')
-
-    if Jay in user.roles:
-        await user.remove_roles(Jay)
+    if Jay in message.author.roles:
+        await message.author.remove_roles(Jay)
     else:
-        await user.add_roles(Jay)
-        
+        await message.author.add_roles(Jay)
+
     await message.delete()
 
+
 async def dot_lorem_ipsum(message):
-    msg = get_lorem()
-    await impersonate(message.author, message.channel, msg, None)
-    await impersonate(message.author, message.channel, msg, None)
-    await impersonate(message.author, message.channel, msg, None)
+    message_content = get_lorem()
+    await impersonate(message.author, message.channel, message_content, None)
+    await impersonate(message.author, message.channel, message_content, None)
+    await impersonate(message.author, message.channel, message_content, None)
