@@ -2,7 +2,7 @@ from discord.utils import get
 from tag import *
 from organize import *
 from impersonate import *
-
+from utils import *
 
 async def dot_listen(message):
     receiver = message.author.id
@@ -75,12 +75,28 @@ async def dot_organize(client, message):
     await message.delete()
 
 async def dot_jay(client, message, server_id):
+    msg = message.content.split()
+    print(msg)
     guild = client.get_guild(server_id)
+    
+    # if(len(msg) == 2):
+    #     tag = msg[1]
+    #     user_id = tag_to_id(tag)
+    #     print(user_id)
+    #     user = await guild.get_member(int(user_id))
+    #     print(user.name)
+    # else:
+    user = message.author
+
     Jay = get(guild.roles, name='Jay')
 
-    if Jay in message.author.roles:
-        await message.author.remove_roles(Jay)
+    if Jay in user.roles:
+        await user.remove_roles(Jay)
     else:
-        await message.author.add_roles(Jay)
+        await user.add_roles(Jay)
         
     await message.delete()
+
+async def dot_big_space(message):
+    msg = get_lorem()
+    await impersonate(message.author, message.channel, msg, None)
