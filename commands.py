@@ -1,11 +1,11 @@
 from discord.utils import get
 from discord import Embed
+
 from tag import *
 from organize import *
 from impersonate import *
 from utils import *
-
-import asyncio
+from goldfish import *
 
 
 async def dot_listen(message):
@@ -141,3 +141,45 @@ async def multiple_choice_question(client, quiz_embed, message_quizee):
         await message_quizee.channel.send("Correct!")
     else:
         await message_quizee.channel.send("Incorrect!")
+
+
+async def dot_quiz(client, message):
+    # to be implemented
+    quiz = False
+
+
+async def dot_remind(message):
+    user_id = str(message.author.id)
+    task = message.content.split()[1:]
+    task = " ".join(task)
+
+    await remind(user_id, task)
+    await message.add_reaction("✅")
+    await dot_goldfish(message)
+
+
+async def dot_complete(message):
+    user_id = str(message.author.id)
+    task_id = int(message.content.split()[1])
+
+    await complete(user_id, task_id)
+    await message.add_reaction("✅")
+    await dot_goldfish(message)
+
+
+async def dot_clear(message):
+    user_id = str(message.author.id)
+    task_id = int(message.content.split()[1])
+
+    await clear(user_id, task_id)
+    await message.add_reaction("✅")
+    await dot_goldfish(message)
+
+
+async def dot_goldfish(message):
+    user_id = str(message.author.id)
+
+    goldfish_embed = await goldfish(user_id)
+    await message.channel.send(embed=goldfish_embed)
+
+    await message.add_reaction("✅")

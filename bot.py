@@ -41,6 +41,14 @@ async def on_message(message):
         await dot_organize(client, message)
     elif message.content.startswith(".q"):
         await dot_quiz(message)
+    elif message.content.startswith(".remind"):
+        await dot_remind(message)
+    elif message.content.startswith(".complete"):
+        await dot_complete(message)
+    elif message.content.startswith(".clear"):
+        await dot_clear(message)
+    elif message.content.startswith(".goldfish"):
+        await dot_goldfish(message)
 
 
 load_dotenv()
