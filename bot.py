@@ -23,7 +23,7 @@ async def on_message(message):
     if message.author.id == client.user.id or message.webhook_id:
         return
 
-    if message.author.name == "vars":
+    if str(message.author.id) == "723826054824722472":
         await message.channel.send(
             "You should stood up within the deadline. See you at 6PM UAE Time 😘"
         )
