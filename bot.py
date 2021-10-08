@@ -23,6 +23,12 @@ async def on_message(message):
     if message.author.id == client.user.id or message.webhook_id:
         return
 
+    if message.author.name == "vars":
+        await message.channel.send(
+            "You should stood up within the deadline. See you at 6PM UAE Time 😘"
+        )
+        return
+
     if message.content == "which barkley":
         await message.channel.send(f"{os.uname()[1]}")
     elif message.content.startswith(".listen"):
