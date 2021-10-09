@@ -41,11 +41,11 @@ async def on_message(message):
         await dot_organize(client, message)
     elif message.content.startswith(".q"):
         await dot_quiz(message)
-    elif message.content.startswith(".task"):
+    elif message.content.startswith(".ta"):  # task add
         await dot_remind(message)
-    elif message.content.startswith(".complete"):
+    elif message.content.startswith(".tc"):  # task complete
         await dot_complete(message)
-    elif message.content.startswith(".clear"):
+    elif message.content.startswith(".tr"):  # task remove
         await dot_clear(message)
     elif message.content == ".goldfish":
         await dot_goldfish(message)
