@@ -10,7 +10,7 @@ from goldfish import *
 
 async def dot_listen(message):
     receiver = message.author.id
-    sender = get_sender(message.content.split()[1])
+    sender = get_tag(message.content.split()[1])
 
     if sender is None:
         return
@@ -21,7 +21,7 @@ async def dot_listen(message):
 
 async def dot_ghost(message):
     receiver = message.author.id
-    sender = get_sender(message.content.split()[1])
+    sender = get_tag(message.content.split()[1])
 
     if sender is None:
         return
@@ -177,7 +177,13 @@ async def dot_clear(message):
 
 
 async def dot_goldfish(message):
-    user_id = str(message.author.id)
+    if len(message.content.split()) > 1:
+        user_id = message.content.split()[1]
+        user_id = get_tag(user_id)
+    else:
+        user_id = str(message.author.id)
+
+    print(user_id)
 
     goldfish_embed = await goldfish(user_id)
     await message.channel.send(embed=goldfish_embed)

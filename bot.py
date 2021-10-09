@@ -47,7 +47,7 @@ async def on_message(message):
         await dot_complete(message)
     elif message.content.startswith(".tr"):  # task remove
         await dot_clear(message)
-    elif message.content == ".goldfish":
+    elif message.content.startswith(".goldfish"):
         await dot_goldfish(message)
 
 
